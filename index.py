@@ -4,6 +4,7 @@ import datetime
 
 def handler(event, context):
     body = {}
+    print(event)
     try:
         body = json.loads(event)
     except:
