@@ -4,9 +4,9 @@ import datetime
 
 def handler(event, context):
     body = {}
-    if event is not None and event['httpMethod'] == 'POST':
+    if event['testpost']:
         try:
-            body = json.loads(event['body'])
+            body = json.loads(event['testpost']['body'])
         except:
             return {'statusCode': 400,
                     'body': 'Invalid input! Expecting a JSON.',
