@@ -3,12 +3,9 @@ import datetime
 
 
 def handler(event, context):
-    body = {}
-    print(type(event))
-    body = event["testpost"]
 
     data = {
-        'output': body,
+        'output': event,
         'timestamp': datetime.datetime.utcnow().isoformat()
     }
     return {'statusCode': 200,
