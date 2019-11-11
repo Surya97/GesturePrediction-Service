@@ -4,8 +4,8 @@ import datetime
 
 def handler(event, context):
     body = {}
-    print(event)
-    body = event['testpost']
+    print(type(event))
+    body = event["testpost"]
 
     data = {
         'output': body,
