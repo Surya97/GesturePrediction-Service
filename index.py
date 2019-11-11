@@ -6,7 +6,7 @@ def handler(event, context):
     body = {}
     print(event)
     try:
-        body = json.loads(event)
+        body = json.loads(event['testpost'])
     except:
         return {'statusCode': 400,
                 'body': 'Invalid input! Expecting a JSON.',
