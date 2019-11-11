@@ -5,7 +5,12 @@ import datetime
 def handler(event, context):
     body = {}
     if event is not None and event['httpMethod'] == 'POST':
-        body = json.loads(event['body'])
+        try:
+            body = json.loads(event['body'])
+        except:
+            return {'statusCode': 400,
+                    'body': 'Invalid input! Expecting a JSON.',
+                    'headers': {'Content-Type': 'application/json'}}
 
     data = {
         'output': body,
