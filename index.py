@@ -5,12 +5,7 @@ import datetime
 def handler(event, context):
     body = {}
     print(event)
-    try:
-        body = json.loads(event['testpost'])
-    except:
-        return {'statusCode': 400,
-                'body': 'Invalid input! Expecting a JSON.',
-                'headers': {'Content-Type': 'application/json'}}
+    body = event['testpost']
 
     data = {
         'output': body,
