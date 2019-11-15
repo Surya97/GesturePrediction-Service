@@ -19,7 +19,7 @@ class PoseNetPoint:
 
     def parse_json_data(self, data):
         for pose in data:
-            keypoint = pose["keypoint"]
+            keypoint = pose["keypoints"]
             for point in keypoint:
                 if point["part"] == "nose":
                     self.nose_y.append(round(point["position"]["y"], 3))
