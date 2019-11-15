@@ -3,6 +3,8 @@ from numpy.fft import fft
 import numpy as np
 from sklearn.preprocessing import scale
 from sklearn.decomposition import PCA
+from classification import Classification
+import pickle
 
 
 def compute_fft_features(label_vector):
@@ -63,5 +65,15 @@ scaled_feature_matrix = scale(features)
 reduced_feature_matrix = pca.fit_transform(scaled_feature_matrix)
 reduced_feature_matrix = reduced_feature_matrix[:, :number_of_decomposed_features]
 
-print(reduced_feature_matrix)
+# print(reduced_feature_matrix)
 print(len(reduced_feature_matrix),len(reduced_feature_matrix[0]))
+
+X = reduced_feature_matrix
+Y = [obj.label for obj in video_objects]
+
+print(len(X), len(Y))
+clf_rforest = Classification('RForest', X, Y)
+clf_rforest.get_classifier_object()
+clf_rforest.get_metrics()
+pickle.dump(clf_rforest.get_classifier(), open('RForest_model.pkl', 'wb'))
+print()
