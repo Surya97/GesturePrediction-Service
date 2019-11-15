@@ -1,6 +1,4 @@
 from preprocessing import Preprocess
-from sklearn.preprocessing import scale
-from sklearn.decomposition import PCA
 from classification import Classification
 import pickle
 from features import Features
@@ -15,19 +13,12 @@ features = []
 
 features_obj = Features(pose_objects=pose_objects)
 features_obj.compute_features()
-features = features_obj.get_features()
-
-number_of_decomposed_features = 20
-pca = PCA(number_of_decomposed_features, random_state=42)
-scaled_feature_matrix = scale(features)
-reduced_feature_matrix = pca.fit_transform(scaled_feature_matrix)
-reduced_feature_matrix = reduced_feature_matrix[:, :number_of_decomposed_features]
+reduced_feature_matrix = features_obj.compute_pca()
 
 # print(reduced_feature_matrix)
 # print(len(reduced_feature_matrix),len(reduced_feature_matrix[0]))
 
 X = reduced_feature_matrix
-# X = features
 Y = [obj.label for obj in pose_objects]
 
 print(len(X), len(Y))

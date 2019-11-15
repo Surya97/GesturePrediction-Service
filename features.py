@@ -1,5 +1,7 @@
 import numpy as np
 from numpy.fft import fft
+from sklearn.preprocessing import scale
+from sklearn.decomposition import PCA
 
 
 def compute_fft(vector):
@@ -57,4 +59,12 @@ class Features:
             self.compute_features()
 
         return self.features
+
+    def compute_pca(self, n_components=20):
+        pca = PCA(n_components=n_components, random_state=42)
+        scaled_feature_matrix = scale(self.get_features())
+        reduced_feature_matrix = pca.fit_transform(scaled_feature_matrix)
+        reduced_feature_matrix = reduced_feature_matrix[:, :n_components]
+        return reduced_feature_matrix
+
 
