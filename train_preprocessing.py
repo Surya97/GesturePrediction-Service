@@ -83,6 +83,14 @@ class Preprocess:
                                          * ((right_wrist_y[i] - nose_y[i]) / (hip_y[i] - nose_y[i])))
 
             new_pose_object = PoseNetPoint(pose_object.label)
+
+            new_pose_object.leftShoulder_x = pose_object.leftShoulder_x
+            new_pose_object.rightShoulder_x = pose_object.rightShoulder_x
+            new_pose_object.leftElbow_x = pose_object.leftElbow_x
+            new_pose_object.rightElbow_x = pose_object.rightElbow_x
+            new_pose_object.leftWrist_x = pose_object.leftWrist_x
+            new_pose_object.rightWrist_x = pose_object.rightWrist_x
+
             new_pose_object.leftShoulder_y = new_left_shoulder_y
             new_pose_object.rightShoulder_y = new_right_shoulder_y
             new_pose_object.leftElbow_y = new_left_elbow_y
