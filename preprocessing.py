@@ -5,27 +5,33 @@ import numpy as np
 
 
 class Preprocess:
-    def __init__(self):
+    def __init__(self, json_data=None):
         self.labels = ["book", "car", "gift", "movie", "sell", "total"]
         self.poseObjects = []
         self.mean_nose = None
         self.mean_hip = None
-        self.read_data()
+        self.read_data(json_data)
         self.new_pose_objects = []
 
-    def read_data(self):
-        for label in self.labels:
-            label_files = os.listdir('./data/' + label)
-            label_file_paths = []
-            for file in label_files:
-                label_file_paths.append(os.path.join('./data/', label, file))
+    def read_data(self, json_data=None):
+        if json_data is None:
+            for label in self.labels:
+                label_files = os.listdir('./data/' + label)
+                label_file_paths = []
+                for file in label_files:
+                    label_file_paths.append(os.path.join('./data/', label, file))
 
-            for file in label_file_paths:
-                with open(file, encoding="utf-8") as label_json_file:
-                    json_data = json.load(label_json_file)
-                    posenet_point = PoseNetPoint(label)
-                    posenet_point.parse_json_data(json_data)
-                    self.poseObjects.append(posenet_point)
+                for file in label_file_paths:
+                    with open(file, encoding="utf-8") as label_json_file:
+                        json_data = json.load(label_json_file)
+                        posenet_point = PoseNetPoint(label)
+                        posenet_point.parse_json_data(json_data)
+                        self.poseObjects.append(posenet_point)
+        else:
+            json_data = json.load(json_data)
+            posenet_point = PoseNetPoint(label=None)
+            posenet_point.parse_json_data(json_data)
+            self.poseObjects.append(posenet_point)
 
     def calculate_mean(self):
         sum_nose = 0
@@ -43,8 +49,12 @@ class Preprocess:
         self.mean_hip = sum_hip / count_hip
         self.mean_nose = sum_nose / count_nose
 
-    def scale_points(self):
-        self.calculate_mean()
+    def scale_points(self, calculate_scale=True):
+        if calculate_scale:
+            self.calculate_mean()
+        else:
+            self.mean_nose = 516.488
+            self.mean_hip = 1310.978
         for pose_object in self.poseObjects:
             nose_y = pose_object.nose_y
             hip_y = pose_object.leftHip_y
