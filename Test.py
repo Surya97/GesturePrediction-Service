@@ -19,7 +19,7 @@ def compute_variance(label_vector):
 
 preprocess = Preprocess()
 preprocess.scale_points()
-print(preprocess.new_pose_objects[0].leftShoulder_y)
+
 
 video_objects =preprocess.new_pose_objects
 
@@ -63,4 +63,5 @@ scaled_feature_matrix = scale(features)
 reduced_feature_matrix = pca.fit_transform(scaled_feature_matrix)
 reduced_feature_matrix = reduced_feature_matrix[:, :number_of_decomposed_features]
 
-
+print(reduced_feature_matrix)
+print(len(reduced_feature_matrix),len(reduced_feature_matrix[0]))
