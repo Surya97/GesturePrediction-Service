@@ -90,7 +90,7 @@ class Preprocess:
             new_pose_object.leftWrist_y = new_left_wrist_y
             new_pose_object.rightWrist_y = new_right_wrist_y
 
-            self.new_pose_objects(new_pose_object)
+            self.new_pose_objects.append(new_pose_object)
 
 
 
