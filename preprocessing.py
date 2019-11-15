@@ -28,7 +28,6 @@ class Preprocess:
                         posenet_point.parse_json_data(json_data)
                         self.poseObjects.append(posenet_point)
         else:
-            json_data = json.load(json_data)
             posenet_point = PoseNetPoint(label=None)
             posenet_point.parse_json_data(json_data)
             self.poseObjects.append(posenet_point)
