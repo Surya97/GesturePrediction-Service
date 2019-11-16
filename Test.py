@@ -3,6 +3,7 @@ from classification import Classification
 import pickle
 from features import Features
 import json
+import os
 # preprocess = Preprocess()
 # preprocess.scale_points()
 #
@@ -26,26 +27,29 @@ import json
 # clf_rforest.get_metrics()
 # pickle.dump(clf_rforest.get_classifier(), open('RForest_model.pkl', 'wb'))
 # print()
-with open('./data/gift/GIFT_PRACTICE_3_PATEL.json', encoding="utf-8") as data:
-    json_data = json.load(data)
+files = os.listdir('./data/gift')
+for file in files:
+    file_path = os.path.join('./data/gift', file)
+    with open(file_path, encoding="utf-8") as data:
+        json_data = json.load(data)
 
-print(json_data)
+    # print(json_data)
 
-preprocess = Preprocess(json_data=json_data)
-preprocess.scale_points(calculate_scale=False)
+    preprocess = Preprocess(json_data=json_data)
+    preprocess.scale_points(calculate_scale=False)
 
-pose_objects = preprocess.new_pose_objects
+    pose_objects = preprocess.new_pose_objects
 
-features = []
+    features = []
 
-features_obj = Features(pose_objects=pose_objects)
-features_obj.compute_features()
-features = features_obj.get_features()
-pca_model = pickle.load(open('pca.pkl', 'rb'))
-reduced_feature_matrix = pca_model.transform(features)
+    features_obj = Features(pose_objects=pose_objects)
+    features_obj.compute_features()
+    features = features_obj.get_features()
+    pca_model = pickle.load(open('pca.pkl', 'rb'))
+    # reduced_feature_matrix = pca_model.transform(features)
 
-random_forest_classifier = pickle.load(open('RForest_model.pkl', 'rb'))
+    random_forest_classifier = pickle.load(open('RForest_model.pkl', 'rb'))
 
-prediction = random_forest_classifier.predict(reduced_feature_matrix)
-
-print('Prediction', prediction)
+    # prediction = random_forest_classifier.predict(reduced_feature_matrix)
+    prediction = random_forest_classifier.predict(features)
+    print('Prediction', prediction)
