@@ -6,11 +6,9 @@ import pickle
 
 
 def compute_fft(vector):
-    max_points_per_series = 4
-    fft_res = np.abs(fft(vector))
-    fft_res_list = fft_res.tolist()
-    fft_res_list.sort(reverse=True)
-    return fft_res_list[:max_points_per_series]
+    max_points_per_series = 10
+    fft_res = np.absolute(fft(vector, max_points_per_series))
+    return fft_res.tolist()
 
 
 def compute_std(vector):
@@ -26,32 +24,68 @@ class Features:
         for pose_object in self.pose_objects:
             feature_vector = []
             # FFT
-            feature_vector += compute_fft(pose_object.leftShoulder_x)
-            feature_vector += compute_fft(pose_object.leftShoulder_y)
-            feature_vector += compute_fft(pose_object.rightShoulder_x)
-            feature_vector += compute_fft(pose_object.rightShoulder_y)
-            feature_vector += compute_fft(pose_object.leftElbow_x)
-            feature_vector += compute_fft(pose_object.leftElbow_y)
-            feature_vector += compute_fft(pose_object.rightElbow_x)
-            feature_vector += compute_fft(pose_object.rightElbow_y)
-            feature_vector += compute_fft(pose_object.leftWrist_x)
-            feature_vector += compute_fft(pose_object.leftWrist_y)
-            feature_vector += compute_fft(pose_object.rightWrist_x)
-            feature_vector += compute_fft(pose_object.rightWrist_y)
+            left_shoulder = []
+            left_shoulder_x_fft = compute_fft(pose_object.leftShoulder_x)
+            left_shoulder_y_fft = compute_fft(pose_object.leftShoulder_y)
+            for i in range(len(left_shoulder_x_fft)):
+                left_shoulder.append(left_shoulder_x_fft[i])
+                left_shoulder.append(left_shoulder_y_fft[i])
+            feature_vector += left_shoulder
+
+            right_shoulder = []
+            right_shoulder_x_fft = compute_fft(pose_object.rightShoulder_x)
+            right_shoulder_y_fft = compute_fft(pose_object.rightShoulder_y)
+            for i in range(len(right_shoulder_x_fft)):
+                right_shoulder.append(right_shoulder_x_fft[i])
+                right_shoulder.append(right_shoulder_y_fft[i])
+            feature_vector += right_shoulder
+
+            left_elbow = []
+            left_elbow_x_fft = compute_fft(pose_object.leftElbow_x)
+            left_elbow_y_fft = compute_fft(pose_object.leftElbow_y)
+            for i in range(len(left_elbow_x_fft)):
+                left_elbow.append(left_elbow_x_fft[i])
+                left_elbow.append(left_elbow_y_fft[i])
+            feature_vector += left_elbow
+
+            right_elbow = []
+            right_elbow_x_fft = compute_fft(pose_object.rightElbow_x)
+            right_elbow_y_fft = compute_fft(pose_object.rightElbow_y)
+            for i in range(len(right_elbow_x_fft)):
+                right_elbow.append(right_elbow_x_fft[i])
+                right_elbow.append(right_elbow_y_fft[i])
+            feature_vector += right_elbow
+
+            left_wrist = []
+            left_wrist_x_fft = compute_fft(pose_object.leftWrist_x)
+            left_wrist_y_fft = compute_fft(pose_object.leftWrist_y)
+            for i in range(len(left_wrist_x_fft)):
+                left_wrist.append(left_wrist_x_fft[i])
+                left_wrist.append(left_wrist_y_fft[i])
+            feature_vector += left_wrist
+
+            right_wrist = []
+            right_wrist_x_fft = compute_fft(pose_object.rightWrist_x)
+            right_wrist_y_fft = compute_fft(pose_object.rightWrist_y)
+            for i in range(len(right_wrist_x_fft)):
+                right_wrist.append(right_wrist_x_fft[i])
+                right_wrist.append(right_wrist_y_fft[i])
+            feature_vector += right_wrist
+
 
             # Variance
-            feature_vector += compute_std(pose_object.leftShoulder_x)
-            feature_vector += compute_std(pose_object.leftShoulder_y)
-            feature_vector += compute_std(pose_object.rightShoulder_x)
-            feature_vector += compute_std(pose_object.rightShoulder_y)
-            feature_vector += compute_std(pose_object.leftElbow_x)
-            feature_vector += compute_std(pose_object.leftElbow_y)
-            feature_vector += compute_std(pose_object.rightElbow_x)
-            feature_vector += compute_std(pose_object.rightElbow_y)
-            feature_vector += compute_std(pose_object.leftWrist_x)
-            feature_vector += compute_std(pose_object.leftWrist_y)
-            feature_vector += compute_std(pose_object.rightWrist_x)
-            feature_vector += compute_std(pose_object.rightWrist_y)
+            feature_vector.append(compute_std(pose_object.leftShoulder_x))
+            feature_vector.append(compute_std(pose_object.leftShoulder_y))
+            feature_vector.append(compute_std(pose_object.rightShoulder_x))
+            feature_vector.append(compute_std(pose_object.rightShoulder_y))
+            feature_vector.append(compute_std(pose_object.leftElbow_x))
+            feature_vector.append(compute_std(pose_object.leftElbow_y))
+            feature_vector.append(compute_std(pose_object.rightElbow_x))
+            feature_vector.append(compute_std(pose_object.rightElbow_y))
+            feature_vector.append(compute_std(pose_object.leftWrist_x))
+            feature_vector.append(compute_std(pose_object.leftWrist_y))
+            feature_vector.append(compute_std(pose_object.rightWrist_x))
+            feature_vector.append(compute_std(pose_object.rightWrist_y))
 
             self.features.append(feature_vector)
 
