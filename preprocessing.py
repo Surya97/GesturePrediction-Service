@@ -12,6 +12,8 @@ class Preprocess:
         self.mean_hip = None
         self.read_data(json_data)
         self.new_pose_objects = []
+        self.max_left = -10000
+        self.min_right= 10000
 
     def read_data(self, json_data=None):
         if json_data is None:
@@ -49,9 +51,16 @@ class Preprocess:
         self.mean_hip = sum_hip / count_hip
         self.mean_nose = sum_nose / count_nose
 
+    def calc_lr_boundaries(self):
+        for pose_object in self.poseObjects:
+            self.max_left = max(self.max_left, max(max(pose_object.leftWrist_x), max(pose_object.leftElbow_x)))
+            self.min_right = min(self.min_right, min(min(pose_object.rightWrist_x), min(pose_object.rightElbow_x)))
+        return
+
     def scale_points(self, calculate_scale=True):
         if calculate_scale:
             self.calculate_mean()
+            self.calc_lr_boundaries()
         else:
             self.mean_nose = 516.488
             self.mean_hip = 1310.978
@@ -66,12 +75,26 @@ class Preprocess:
             left_wrist_y = pose_object.leftWrist_y
             right_wrist_y = pose_object.rightWrist_y
 
+            left_shoulder_x = pose_object.leftShoulder_x
+            right_shoulder_x = pose_object.rightShoulder_x
+            left_elbow_x = pose_object.leftElbow_x
+            right_elbow_x = pose_object.rightElbow_x
+            left_wrist_x = pose_object.leftWrist_x
+            right_wrist_x = pose_object.rightWrist_x
+
             new_left_shoulder_y = []
             new_right_shoulder_y = []
             new_left_elbow_y = []
             new_right_elbow_y = []
             new_left_wrist_y = []
             new_right_wrist_y = []
+
+            new_left_shoulder_x = []
+            new_right_shoulder_x = []
+            new_left_elbow_x = []
+            new_right_elbow_x = []
+            new_left_wrist_x = []
+            new_right_wrist_x = []
 
             for i in range(len(left_shoulder_y)):
                 new_left_shoulder_y.append(self.mean_nose + (self.mean_hip - self.mean_nose)
@@ -92,14 +115,51 @@ class Preprocess:
                 new_right_wrist_y.append(self.mean_nose + (self.mean_hip - self.mean_nose)
                                          * ((right_wrist_y[i] - nose_y[i]) / (hip_y[i] - nose_y[i])))
 
+                #x- axis
+                new_left_shoulder_x.append(self.min_right + (
+                            (left_shoulder_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                                max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                                     right_elbow_x[
+                                                                                                         i]))))
+                new_right_shoulder_x.append(self.min_right + (
+                        (right_shoulder_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                        max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                             right_elbow_x[
+                                                                                                 i]))))
+                new_left_elbow_x.append(self.min_right + (
+                        (left_elbow_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                        max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                             right_elbow_x[
+                                                                                                 i]))))
+                new_right_elbow_x.append(self.min_right + (
+                        (right_elbow_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                        max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                             right_elbow_x[
+                                                                                                 i]))))
+                new_left_wrist_x.append(self.min_right + (
+                        (left_wrist_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                        max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                             right_elbow_x[
+                                                                                                 i]))))
+
+                new_right_wrist_x.append(self.min_right + (
+                        (right_wrist_x[i] - min(min(right_wrist_x[i], right_shoulder_x[i]), right_elbow_x[i])) / (
+                        max(max(left_wrist_x[i], left_shoulder_x[i]), left_elbow_x[i]) - min(right_wrist_x[i],
+                                                                                             right_elbow_x[
+                                                                                                 i]))))
+            #x - axis
+
+            #print(self.min_right + (self.max_left - self.min_right)*((left_shoulder_x[0]-min(right_wrist_x[0],right_elbow_x[0]))/(max(left_wrist_x[0],left_elbow_x[0])-min(right_wrist_x[0],right_elbow_x[0]))))
+
+
             new_pose_object = PoseNetPoint(pose_object.label)
 
-            new_pose_object.leftShoulder_x = pose_object.leftShoulder_x
-            new_pose_object.rightShoulder_x = pose_object.rightShoulder_x
-            new_pose_object.leftElbow_x = pose_object.leftElbow_x
-            new_pose_object.rightElbow_x = pose_object.rightElbow_x
-            new_pose_object.leftWrist_x = pose_object.leftWrist_x
-            new_pose_object.rightWrist_x = pose_object.rightWrist_x
+            new_pose_object.leftShoulder_x = new_left_shoulder_x
+            new_pose_object.rightShoulder_x = new_right_shoulder_x
+            new_pose_object.leftElbow_x = new_left_elbow_x
+            new_pose_object.rightElbow_x = new_right_elbow_x
+            new_pose_object.leftWrist_x = new_left_wrist_x
+            new_pose_object.rightWrist_x = new_right_wrist_x
 
             new_pose_object.leftShoulder_y = new_left_shoulder_y
             new_pose_object.rightShoulder_y = new_right_shoulder_y
