@@ -51,7 +51,6 @@ class Preprocess:
     def scale_points(self, calculate_scale=True):
         if calculate_scale:
             self.calculate_mean()
-            self.calc_lr_boundaries()
         else:
             self.mean_nose = 516.488
             self.mean_hip = 1310.978
