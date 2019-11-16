@@ -1,10 +1,7 @@
-from LogisticRegression import LogReg
-from DecisionTree import DecisionTree
 from SVM import SVM
 from RandomForest import RandomForest
-from XGBoostClassifier import XGBoost
-from AdaBoostClassifier import AdaBoost
-from NaiveBayes import NaiveBayes
+from knn import KNN
+from LogisticRegression import LogReg
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
@@ -36,32 +33,20 @@ class Classification:
                                                                                 shuffle=True, random_state=43)
 
     def get_classifier_object(self):
-        if self.classifier_name == 'LogReg':
-            self.clf = LogReg(self.x_train, self.y_train, self.x_test, self.y_test)
-            self.clf.train()
-            self.y_pred = self.clf.predict()
-        elif self.classifier_name == 'DeciTree':
-            self.clf = DecisionTree(self.x_train, self.y_train, self.x_test, self.y_test)
-            self.clf.train()
-            self.y_pred = self.clf.predict()
-        elif self.classifier_name == 'svm':
+        if self.classifier_name == 'svm':
             self.clf = SVM(self.x_train, self.y_train, self.x_test, self.y_test)
             self.clf.train()
             self.y_pred = self.clf.predict()
-        if self.classifier_name == 'RForest':
+        elif self.classifier_name == 'logreg':
+            self.clf = LogReg(self.x_train, self.y_train, self.x_test, self.y_test)
+            self.clf.train()
+            self.y_pred = self.clf.predict()
+        elif self.classifier_name == 'RForest':
             self.clf = RandomForest(self.x_train, self.y_train, self.x_test, self.y_test)
             self.clf.train()
             self.y_pred = self.clf.predict()
-        elif self.classifier_name == 'XGB':
-            self.clf = XGBoost(self.x_train, self.y_train, self.x_test, self.y_test)
-            self.clf.train()
-            self.y_pred = self.clf.predict()
-        elif self.classifier_name == 'NaiveBayes':
-            self.clf = NaiveBayes(self.x_train, self.y_train, self.x_test, self.y_test)
-            self.clf.train()
-            self.y_pred = self.clf.predict()
-        elif self.classifier_name == 'AdaBoost':
-            self.clf = AdaBoost(self.x_train, self.y_train, self.x_test, self.y_test)
+        elif self.classifier_name == 'knn':
+            self.clf = KNN(self.x_train, self.y_train, self.x_test, self.y_test)
             self.clf.train()
             self.y_pred = self.clf.predict()
 
