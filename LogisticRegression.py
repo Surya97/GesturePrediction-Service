@@ -5,9 +5,7 @@ import numpy as np
 
 class LogReg:
     def __init__(self, x_train, y_train, x_test, y_test):
-        self.clf = LogisticRegression(penalty='l2')
-        self.grid_search_params = {'C': np.logspace(-3, 3, 7), 'solver': ['lbfgs', 'liblinear', 'sag', 'saga']}
-        self.clf = GridSearchCV(self.clf, self.grid_search_params, cv=10)
+        self.clf = LogisticRegression(penalty='l2', solver='lbfgs')
         self.x_train = x_train
         self.y_train = y_train
         self.x_test = x_test
