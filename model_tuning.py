@@ -14,12 +14,13 @@ features = []
 
 features_obj = Features(pose_objects=pose_objects)
 features_obj.compute_features()
-reduced_feature_matrix = features_obj.compute_pca()
+# reduced_feature_matrix = features_obj.compute_pca()
 
 # print(reduced_feature_matrix)
 # print(len(reduced_feature_matrix),len(reduced_feature_matrix[0]))
 
-X = reduced_feature_matrix
+# X = reduced_feature_matrix
+X = features_obj.get_features()
 Y = [obj.label for obj in pose_objects]
 
 print(len(X), len(Y))
