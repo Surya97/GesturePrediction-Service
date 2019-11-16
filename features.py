@@ -2,6 +2,7 @@ import numpy as np
 from numpy.fft import fft
 from sklearn.preprocessing import scale
 from sklearn.decomposition import PCA
+import pickle
 
 
 def compute_fft(vector):
@@ -57,7 +58,6 @@ class Features:
     def get_features(self):
         if len(self.features) == 0:
             self.compute_features()
-
         return self.features
 
     def compute_pca(self, n_components=20):
@@ -65,6 +65,7 @@ class Features:
         scaled_feature_matrix = scale(self.get_features())
         reduced_feature_matrix = pca.fit_transform(scaled_feature_matrix)
         reduced_feature_matrix = reduced_feature_matrix[:, :n_components]
+        pickle.dump(pca, open('pca.pkl', 'wb'))
         return reduced_feature_matrix
 
 
