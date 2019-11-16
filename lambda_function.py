@@ -28,12 +28,22 @@ def lambda_handler(event, context):
 
     random_forest_classifier = pickle.loads(s3.Bucket("gesture-recognition").Object("RForest_model.pkl").get()['Body'].read())
 
-    prediction = random_forest_classifier.predict(features)
+    svm_classifier = pickle.loads(s3.Bucket("gesture-recognition").Object("SVM_model.pkl").get()['Body'].read())
+
+    knn_classifier = pickle.loads(s3.Bucket("gesture-recognition").Object("KNN_model.pkl").get()['Body'].read())
+
+    logreg_classifier = pickle.loads(s3.Bucket("gesture-recognition").Object("LogReg_model.pkl").get()['Body'].read())
+
+    prediction_rf = random_forest_classifier.predict(features)
+    prediction_svm = svm_classifier.predict(features)
+    prediction_knn = knn_classifier.predict(features)
+    prediction_logreg = logreg_classifier.predict(features)
 
     data = {
-        'random_Forest_prediction': prediction[0],
-        'event': event,
-        'time': datetime.datetime.utcnow().isoformat()
+        'random_Forest_prediction': prediction_rf[0],
+        'SVM Prediction': prediction_svm[0],
+        'KNN Prediction': prediction_knn[0],
+        'Logistic regression Prediction': prediction_logreg[0]
     }
     return {
         'statusCode': 200,
