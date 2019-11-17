@@ -40,10 +40,10 @@ def lambda_handler(event, context):
     prediction_logreg = logreg_classifier.predict(features)
 
     data = {
-        'random_Forest_prediction': prediction_rf[0],
-        'SVM Prediction': prediction_svm[0],
-        'KNN Prediction': prediction_knn[0],
-        'Logistic regression Prediction': prediction_logreg[0]
+        "1": prediction_rf[0],
+        "2": prediction_svm[0],
+        "3": prediction_knn[0],
+        "4": prediction_logreg[0]
     }
     return {
         'statusCode': 200,
