@@ -2,6 +2,7 @@ from SVM import SVM
 from RandomForest import RandomForest
 from knn import KNN
 from LogisticRegression import LogReg
+from LinearDiscriminantAnalysis import LDA
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
 from sklearn.metrics import accuracy_score
@@ -47,6 +48,10 @@ class Classification:
             self.y_pred = self.clf.predict()
         elif self.classifier_name == 'knn':
             self.clf = KNN(self.x_train, self.y_train, self.x_test, self.y_test)
+            self.clf.train()
+            self.y_pred = self.clf.predict()
+        elif self.classifier_name == 'lda':
+            self.clf = LDA(self.x_train, self.y_train, self.x_test, self.y_test)
             self.clf.train()
             self.y_pred = self.clf.predict()
 
