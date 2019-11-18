@@ -5,7 +5,7 @@ import numpy as np
 
 class LogReg:
     def __init__(self, x_train, y_train, x_test, y_test):
-        self.clf = LogisticRegression(penalty='l2', solver='lbfgs')
+        self.clf = LogisticRegression(penalty='l2', solver='lbfgs', max_iter=1000)
         self.x_train = x_train
         self.y_train = y_train
         self.x_test = x_test
