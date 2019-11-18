@@ -30,7 +30,7 @@ We have achieved a maximum validation set accuracy of 69%.
 - We have used AWS Lambda service to host the service
 - All the models are saved in pickled format and uploaded to S3 bucket.
 - In the lambda function we tried to do preprocess the given JSON input and predict the label by using the models loaded from S3 bucket.
-- Here is the link to the service [REST API](https://tlbms0lmhg.execute-api.us-east-1.amazonaws.com/default/gesture_prediction)
+- Here is the link to the service [REST API](https://tlbms0lmhg.execute-api.us-east-1.amazonaws.com/default/gesture_prediction) {handles only POST requests}
 
 
 ### Challenges faced
