@@ -3,7 +3,7 @@
 
 ### Problem statement
 Develop an online Application Service that accepts Human Pose Skeletal key points of a sign video and return the label of the sign as a JSON Response.
-The Key points are generated using **Tensorflow's Po
+The Key points are generated using **Tensorflow's Pose Net**
 
 ### Feature Engineering
 - Collected (x,y) co-ordinate of each part separately from the given PoseNet output files.
@@ -35,5 +35,5 @@ We have achieved a maximum validation set accuracy of 69%.
 
 ### Challenges faced
 - Out of the given 6 gestures, there is no major change in the x-coordinates for *car* and *gift* gestures.
-- There were different number of keypoints for different videos of the same gesture. So, huge amount of preprocessing was required.
+- There were different number of keypoints for different videos of the same gesture.
 - Also, most of the gestures given to classify have major movement in the fingers rather than shoulder/wrist/hand.

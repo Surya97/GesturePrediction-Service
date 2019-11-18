@@ -1,6 +1,5 @@
 from SVM import SVM
 from RandomForest import RandomForest
-from knn import KNN
 from LogisticRegression import LogReg
 from LinearDiscriminantAnalysis import LDA
 from sklearn.model_selection import train_test_split
